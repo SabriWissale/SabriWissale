@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Gestion utilisateurs</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />
+</head>
+<style>
+    * {margin: 0; padding: 0;}
+ 
+ div {
+   margin: 20px;
+ }
+  
+ ul {
+   list-style-type: none;
+   width: 900px;
+   align-content: center;
+ }
+  
+ h2 {
+   font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
+   text-align: center;
+ }
+
+ h3 {
+   font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
+ }
+  
+ li img {
+   float: left;
+   margin: 0 15px 0 0;
+ }
+  
+ li p {
+   font: 200 12px/1.5 Georgia, Times New Roman, serif;
+   width : 100%;
+ }
+  
+ li {
+   padding: 10px;
+   overflow: auto;
+   width : 100%;
+ }
+  
+ li:hover {
+   background: #eee;
+   cursor: pointer;
+ }
+
+ header {
+	background: url('http://www.autodatz.com/wp-content/uploads/2017/05/Old-Car-Wallpapers-Hd-36-with-Old-Car-Wallpapers-Hd.jpg');
+	text-align: center;
+	width: 100%;
+	height: auto;
+	background-size: cover;
+	background-attachment: fixed;
+	position: relative;
+	overflow: hidden;
+	border-radius: 0 0 85% 85% / 30%;
+}
+header .overlay{
+	width: 100%;
+	height: 100%;
+	padding: 50px;
+	color: #FFF;
+	text-shadow: 1px 1px 1px #333;
+  background-image: linear-gradient( 135deg, #9f05ff69 10%, #fd5e086b 100%);
+
+}
+h1 {
+	font-family: 'Dancing Script', cursive;
+	font-size: 80px;
+	margin-bottom: 30px;
+}
+
+h3, p {
+	font-family: 'Open Sans', sans-serif;
+	margin-bottom: 30px;
+}
+
+</style>
+
+<header>
+  <title>wissale's blog</title>
+  <div class="overlay">
+  <h1>Post details</h1>
+  
+      </div>
+  </header>
+
+<body>
+
+</br></br>
+    <div class="container2" style="background-color :thistle">
+    
+    </div>
+    </br></br>
+    
+</body>
+</html>
+
+<script>
+async function getArticle() {
+var url_string = window.location.href;
+var url = new URL(url_string);
+var c = url.searchParams.get("id");
+
+let url2 = `http://localhost:3000/articles/${c}`;
+    try {
+        let res = await fetch(url2);
+        return await res.json();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function renderArticle() {
+    let k = 1;
+    let data = await getArticle();
+    let html  = `<ul>
+          <li>
+            <img src="https://picsum.photos/200" />
+            <h3>${data.article.title}</h3>
+            <p>${data.article.content}</p>
+            <h4 style="font-size : 15px;">written by : ${data.author.username}</h4>
+          </li>
+        </ul>
+        </br></br>
+        <div><h3>List of comments : </h3>
+        <ul>`;
+
+        data.comments.forEach(comment => {
+        let htmlSegment = `<li><h4 style="font-size : 18px;">comment ${k++}: </h4>
+                            <p>${comment.content}</p>
+                            </li>`;
+        html += htmlSegment;
+    });
+    html += `</ul></div></div>`;
+
+
+    let container = document.querySelector('.container2');
+    container.innerHTML = html;
+}
+
+renderArticle();
+</script>
